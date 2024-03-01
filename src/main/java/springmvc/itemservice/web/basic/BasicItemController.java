@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,20 @@ public class BasicItemController {
 		List<Item> items = itemRepository.findAll(); // 전체 상품 조회
 		model.addAttribute("items", items); // 상품 목록을 모델에 담아서 뷰에 전달
 		return "basic/items"; // 뷰 이름 반환
+	}
+
+	// 상품 상세 조회
+	@GetMapping("/{itemId}") // itemId는 @PathVariable로 조회
+	public String item(@PathVariable(name = "itemId") Long itemId, Model model) { // itemId로 상품 조회
+		Item item = itemRepository.findById(itemId); // 상품 조회
+		model.addAttribute("item", item); // 상품을 모델에 담아서 뷰에 전달
+		return "basic/item"; // 뷰 이름 반환
+	}
+
+	// 상품 등록 폼
+	@GetMapping("/add")
+	public String addForm() {
+		return "basic/addForm"; // 뷰 이름 반환
 	}
 
 	// 테스트용 데이터 추가
